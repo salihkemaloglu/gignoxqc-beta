@@ -3,6 +3,7 @@ FROM golang:1.9
 RUN go get gopkg.in/mgo.v2/bson 
 RUN go get github.com/spf13/pflag
 RUN go get github.com/rs/cors
+RUN go get github.com/dgrijalva/jwt-go
 RUN go get goji.io
 # set environment path
 ENV PATH /go/bin:$PATH

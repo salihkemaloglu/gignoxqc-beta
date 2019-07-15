@@ -14,15 +14,6 @@ import (
 	"goji.io/pat"
 )
 
-var (
-	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
-	enableTLS       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.") // false is for local development
-	tlsCertFilePath = pflag.String("tls_cert_file", "app_root/ssl/fullchain.pem", "Path to the CRT/PEM file.")
-	tlsKeyFilePath  = pflag.String("tls_key_file", "app_root/ssl/privkey.pem", "Path to the private key file.")
-	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
-	// flagHttpMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
-)
-
 //SayHello ...
 func SayHello(w http.ResponseWriter, r *http.Request) {
 
@@ -50,37 +41,22 @@ func UploadFile(w http.ResponseWriter, r *http.Request) {
 }
 func main() {
 	pflag.Parse()
-
-	port := 8902
-	configFile := "dev"
-	if *enableTLS {
-		configFile = "prod"
-		port = 8904
-	}
-
 	fmt.Println("QC Service is Starting...")
 	mux := goji.NewMux()
 	mux.HandleFunc(pat.Get("/hello"), SayHello)
 	mux.HandleFunc(pat.Post("/login"), Login)
 	mux.HandleFunc(pat.Post("/uploadfile"), UploadFile)
 	httpServer := http.Server{
-		Addr:    fmt.Sprintf(":%v", port),
+		Addr:    fmt.Sprintf(":%v", 8904),
 		Handler: cors.AllowAll().Handler(mux),
 	}
 	fmt.Println("Mongodb Service Started")
-	if confErr := repo.LoadConfiguration(configFile); confErr != "ok" {
+	if confErr := repo.LoadConfiguration("dev"); confErr != "ok" {
 		fmt.Println(confErr)
 	}
-	if *enableTLS {
-		fmt.Printf("server started as  https and listen to port: %v \n", port)
-		if err := httpServer.ListenAndServeTLS(*tlsCertFilePath, *tlsKeyFilePath); err != nil {
-			fmt.Printf("failed starting http2 server: %v", err.Error())
-		}
-	} else {
-		fmt.Printf("server started as http and listen to port: %v \n", port)
-		if err := httpServer.ListenAndServe(); err != nil {
-			fmt.Printf("failed starting http server: %v", err.Error())
-		}
+	fmt.Printf("server started as http and listen to port: %v \n", 8904)
+	if err := httpServer.ListenAndServe(); err != nil {
+		fmt.Printf("failed starting http server: %v", err.Error())
 	}
 }
 func respondWithError(w http.ResponseWriter, code int, msg string) {

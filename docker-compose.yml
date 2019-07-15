@@ -1,0 +1,9 @@
+version: '3'
+services: 
+  api:
+    image: gignox_qc:latest
+    container_name: gignox_qc
+    ports:
+      - 8904:8904
+    restart: always      
+

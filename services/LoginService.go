@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	helper "github.com/salihkemaloglu/gignoxqc-beta-001/helpers"
@@ -25,9 +24,7 @@ func LoginService(w http.ResponseWriter, r *http.Request) (string, bool) {
 	}
 	tokenRes, tokenErr := helper.CreateTokenEndpointService(user)
 	if tokenErr != nil {
-		return fmt.Sprintf("Token creation error "+": %v", tokenErr.Error()), false
+		panic(err)
 	}
-
 	return tokenRes, true
-
 }

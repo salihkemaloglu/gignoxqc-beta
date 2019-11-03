@@ -41,26 +41,26 @@ func LoadConfiguration(connectionType string) string {
 	config := Config{}
 
 	if connectionType == "dev" {
-		configFile, err := os.Open("app_root/config_files/dev.json")
+		configFile, err := os.Open("environments/db-connection-files/dev.json")
 		defer configFile.Close()
 		if err != nil {
-			return fmt.Sprintf("Config file err: %v", err.Error())
+			panic(err)
 		}
 		jsonParser := json.NewDecoder(configFile)
 		jsonParser.Decode(&config)
 	} else if connectionType == "prod" {
-		configFile, err := os.Open("app_root/config_files/prod.json")
+		configFile, err := os.Open("environments/db-connection-files/prod.json")
 		defer configFile.Close()
 		if err != nil {
-			return fmt.Sprintf("Config file err: %v", err.Error())
+			panic(err)
 		}
 		jsonParser := json.NewDecoder(configFile)
 		jsonParser.Decode(&config)
 	} else if connectionType == "local" {
-		configFile, err := os.Open("app_root/config_files/local.json")
+		configFile, err := os.Open("environments/db-connection-files/local.json")
 		defer configFile.Close()
 		if err != nil {
-			return fmt.Sprintf("Config file err: %v", err.Error())
+			panic(err)
 		}
 		jsonParser := json.NewDecoder(configFile)
 		jsonParser.Decode(&config)

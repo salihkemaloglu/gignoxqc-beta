@@ -19,5 +19,5 @@ func (r User) Login() (*User, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &r, err
+	return &r, nil
 }

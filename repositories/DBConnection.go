@@ -36,10 +36,9 @@ func Connect(con Config) {
 }
 
 //LoadConfiguration Parse the configuration file 'config.toml', and establish a connection to DB
-func LoadConfiguration(connectionType string) string {
+func LoadConfiguration(connectionType string) {
 
 	config := Config{}
-
 	if connectionType == "dev" {
 		configFile, err := os.Open("environments/db-connection-files/dev.json")
 		defer configFile.Close()
@@ -65,7 +64,5 @@ func LoadConfiguration(connectionType string) string {
 		jsonParser := json.NewDecoder(configFile)
 		jsonParser.Decode(&config)
 	}
-
 	Connect(config)
-	return "ok"
 }

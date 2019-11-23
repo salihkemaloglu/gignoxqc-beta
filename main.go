@@ -29,9 +29,8 @@ func main() {
 		}
 	}()
 	fmt.Println("Mongodb Service Started")
-	if confErr := repo.LoadConfiguration("dev"); confErr != "ok" {
-		fmt.Println(confErr)
-	}
+	repo.LoadConfiguration("dev")
+
 	fmt.Printf("server started as http and listen to port: %v \n", 8904)
 	if err := httpServer.ListenAndServe(); err != nil {
 		fmt.Printf("failed starting http server: %v", err.Error())
